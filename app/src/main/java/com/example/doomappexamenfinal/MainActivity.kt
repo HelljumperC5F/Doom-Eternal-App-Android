@@ -353,6 +353,33 @@ fun DemonLabel(name: String, value: String) {
 }
 //endregion
 
+@Composable
+fun WeaponLabel(name: String, value: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = name,
+            color = Color.White,
+            fontFamily = eternal_ui_family,
+            textAlign = TextAlign.End,
+        )
+        Spacer(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+        )
+        Text(
+            text = value,
+            color = Color.White,
+            fontFamily = eternal_ui_family,
+            textAlign = TextAlign.End,
+            modifier = Modifier
+                .width(250.dp),
+        )
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
