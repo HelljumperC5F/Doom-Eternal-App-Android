@@ -399,32 +399,6 @@ fun WeaponsScreen(navController: NavController) {
 }
 
 @Composable
-fun WeaponLabel(name: String, value: String) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            text = name,
-            color = Color.White,
-            fontFamily = eternal_ui_family,
-            textAlign = TextAlign.End,
-        )
-        Spacer(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-        )
-        Text(
-            text = value,
-            color = Color.White,
-            fontFamily = eternal_ui_family,
-            textAlign = TextAlign.End,
-            modifier = Modifier
-                .width(250.dp),
-        )
-    }
-}
-@Composable
 fun WeaponsScreenItem(weaponDetails: WeaponDetails, navController: NavController) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -529,6 +503,34 @@ fun WeaponDetailsView(weaponKey: String) {
         }
     }
 }
+
+@Composable
+fun WeaponLabel(name: String, value: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = name,
+            color = Color.White,
+            fontFamily = eternal_ui_family,
+            textAlign = TextAlign.End,
+        )
+        Spacer(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+        )
+        Text(
+            text = value,
+            color = Color.White,
+            fontFamily = eternal_ui_family,
+            textAlign = TextAlign.End,
+            modifier = Modifier
+                .width(250.dp),
+        )
+    }
+}
+
 //endregion
 
 @Preview(showBackground = true)
