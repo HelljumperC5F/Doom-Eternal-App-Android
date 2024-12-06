@@ -352,6 +352,49 @@ fun DemonLabel(name: String, value: String) {
     }
 }
 //endregion
+@Composable
+fun WeaponsScreen(navController: NavController) {
+    val weapons = remember { mutableStateOf<List<String>?>(null) }
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        scope.launch {
+            try {
+                weapons.value = ApiClient.apiService.getWeapons()
+            } catch (e: Exception) {
+                // Handle error
+                Log.d("!!!!!!!!!!!!!!!!!!!", e.toString())
+                weapons.value = listOf("Failed to load weapons")
+            }
+        }
+    }
+
+    when (val weaponKeys = weapons.value) {
+        null -> Text(
+            text = "Loading...",
+            color = Color.White,
+            fontFamily = eternal_ui_family,
+        )
+        else -> LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .background(Color.Black)
+                .fillMaxWidth(),
+        ) {
+            items(weaponKeys.size) { weaponInt ->
+                val weaponKey = weaponKeys[weaponInt]
+                val weaponDetails = remember { mutableStateOf<WeaponDetails?>(null) }
+
+                LaunchedEffect(Unit) {
+                    scope.launch {
+                        weaponDetails.value = ApiClient.apiService.getWeaponDetails(weaponKey)
+                    }
+                }
+                weaponDetails.value?.let { WeaponsScreenItem(it, navController) }
+            }
+        }
+    }
+}
 
 @Composable
 fun WeaponLabel(name: String, value: String) {
