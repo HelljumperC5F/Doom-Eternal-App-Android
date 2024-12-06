@@ -352,6 +352,8 @@ fun DemonLabel(name: String, value: String) {
     }
 }
 //endregion
+
+//region Weapons
 @Composable
 fun WeaponsScreen(navController: NavController) {
     val weapons = remember { mutableStateOf<List<String>?>(null) }
@@ -527,6 +529,7 @@ fun WeaponDetailsView(weaponKey: String) {
         }
     }
 }
+//endregion
 
 @Preview(showBackground = true)
 @Composable
