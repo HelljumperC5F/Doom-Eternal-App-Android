@@ -422,7 +422,111 @@ fun WeaponLabel(name: String, value: String) {
         )
     }
 }
+@Composable
+fun WeaponsScreenItem(weaponDetails: WeaponDetails, navController: NavController) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(20.dp),
+        modifier = Modifier
+            .padding(vertical = 15.dp)
+            .width(300.dp)
+            .background(Color.Black)
+            .clickable { navController.navigate("weaponDetail/${weaponDetails.name.lowercase().replace(" ", "_")}") },
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .height(60.dp)
+                .width(60.dp)
+                .paint(
+                    painterResource(id = R.drawable.image_frame),
+                    contentScale = ContentScale.FillBounds,
+                ),
+        ) {
+            AsyncImage(
+                model = weaponDetails.image,
+                contentDescription = "Image of the weapon",
+                modifier = Modifier
+                    .height(50.dp)
+                    .width(50.dp)
+                    .fillMaxSize(),
+            )
+        }
+        Spacer(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+        )
+        Text(
+            text = weaponDetails.name,
+            color = Color.White,
+            fontFamily = eternal_ui_family,
+        )
+    }
+}
 
+@Composable
+fun WeaponDetailsView(weaponKey: String) {
+    val weaponDetailsMutable = remember { mutableStateOf<WeaponDetails?>(null) }
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        scope.launch {
+            weaponDetailsMutable.value = ApiClient.apiService.getWeaponDetails(weaponKey)
+        }
+    }
+
+    when (val weaponDetail = weaponDetailsMutable.value) {
+        null -> Text(
+            text = "Loading...",
+            color = Color.White,
+            fontFamily = eternal_ui_family,
+        )
+        else -> Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .background(Color.Black)
+                .fillMaxSize(),
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(40.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .paint(
+                            painterResource(id = R.drawable.image_frame),
+                            contentScale = ContentScale.Fit,
+                        ),
+                ) {
+                    AsyncImage(
+                        model = weaponDetail.image,
+                        contentDescription = "Image of the weapon",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .height(200.dp)
+                            .fillMaxSize(),
+                    )
+                }
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    modifier = Modifier
+                        .width(400.dp),
+                ) {
+                    WeaponLabel("Name:", weaponDetail.name)
+                    WeaponLabel("Damage:", weaponDetail.damage)
+                    WeaponLabel("Ammo Type:", weaponDetail.ammo_type)
+                    WeaponLabel("Weapon Type:", weaponDetail.weapon_type)
+                    WeaponLabel("Fire Mode:", weaponDetail.fire_mode)
+                    WeaponLabel("Location:", weaponDetail.location)
+                }
+            }
+        }
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
